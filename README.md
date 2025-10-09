@@ -49,6 +49,25 @@ Generate 10 alpona-style images:
 python main.py -w 800 -ht 800 -out "output" -v
 ```
 
+## GUI Application 🎨
+
+A GUI version of the Alpona Generator is now available! This application allows users to:
+- Generate alpona images with customizable parameters (output directory, width, height, and image count).
+- View generated images directly in the application with navigation controls.
+- Delete the generated images and their directory with a single click.
+- View logs of the generation process in real-time.
+
+### Running the GUI
+To launch the GUI application, run the `gui_alponagen.py` script:
+
+```bash
+python gui_alponagen.py
+```
+
+### Important:
+
+**Ensure that the GUI executable or script (`gui_alponagen.py`) is in the same directory as `main.py` to ensure proper functionality.**
+
 ## Contributing 🤝
 Feel free to fork the repository and submit pull requests. Contributions are welcome!
 
