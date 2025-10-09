@@ -132,14 +132,20 @@ class ArtGenerator:
         filled_styles = [
             layer_styles.draw_triangles_filled, layer_styles.draw_circles_filled, layer_styles.draw_spiral, 
             # layer_styles.draw_dots, 
-            layer_styles.draw_petals_filled, layer_styles.draw_checkerboard
+            layer_styles.draw_sunburst_filled,
+            layer_styles.draw_petals_filled, layer_styles.draw_checkerboard,
+            layer_styles.draw_lotus_petals_filled,
+            layer_styles.draw_braid,
+            layer_styles.draw_sprouts,
         ]
         outlined_styles = [
             layer_styles.draw_triangles_outlined, layer_styles.draw_circles_outlined, 
             layer_styles.draw_tesselation, layer_styles.draw_petals_outlined, layer_styles.draw_radial_lines, 
+            layer_styles.draw_sunburst_outlined,
             # layer_styles.draw_wave, 
             # layer_styles.draw_crosshatch, 
-            layer_styles.draw_concentric_rings
+            layer_styles.draw_concentric_rings,
+            layer_styles.draw_lotus_petals_outlined,
         ]
         
         # ------------------------------------------------------------------

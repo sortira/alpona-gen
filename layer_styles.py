@@ -282,3 +282,152 @@ def draw_checkerboard(draw, environment, inner_r, outer_r):
             p3 = (center[0] + r2 * math.cos(angle2), center[1] + r2 * math.sin(angle2))
             p4 = (center[0] + r2 * math.cos(angle1), center[1] + r2 * math.sin(angle1))
             draw.polygon([p1, p2, p3, p4], fill=white + (180,))
+
+# ----------------------------------------------------------------------
+# NEW LAYER STYLES (Added on 2025-10-09)
+# ----------------------------------------------------------------------
+
+# --- 1. Sunburst ---
+def draw_sunburst_base(draw, environment, inner_r, outer_r, is_filled):
+    """
+    Draws a series of long, sharp triangular rays, creating a sunburst effect.
+
+    Mathematical Explanation:
+    - Each ray is a thin isosceles triangle defined by three points:
+      - One point on the inner circle (the base center).
+      - Two points on the outer circle, very close to each other to form a sharp tip.
+      This is an inverse of the `draw_triangles` pattern for a different aesthetic.
+    """
+    n_rays = random.randint(24, 48)
+    line_width = _get_line_width(is_filled)
+    center = environment["center"]
+    white = environment["white"]
+    for i in range(n_rays):
+        angle = 2 * math.pi * i / n_rays
+        # Small angle offset for the two outer points
+        angle_offset = (math.pi / n_rays) * 0.2
+        
+        p1 = (center[0] + inner_r * math.cos(angle), center[1] + inner_r * math.sin(angle))
+        p2 = (center[0] + outer_r * math.cos(angle - angle_offset), center[1] + outer_r * math.sin(angle - angle_offset))
+        p3 = (center[0] + outer_r * math.cos(angle + angle_offset), center[1] + outer_r * math.sin(angle + angle_offset))
+        
+        if is_filled:
+            draw.polygon([p1, p2, p3], fill=white + (200,))
+        else:
+            draw.polygon([p1, p2, p3], outline=white + (200,), width=line_width)
+
+def draw_sunburst_filled(draw, environment, inner_r, outer_r): draw_sunburst_base(draw, environment, inner_r, outer_r, True)
+def draw_sunburst_outlined(draw, environment, inner_r, outer_r): draw_sunburst_base(draw, environment, inner_r, outer_r, False)
+
+
+# --- 2. Lotus Petals (Rounded) ---
+def draw_lotus_petals_base(draw, environment, inner_r, outer_r, is_filled):
+    """
+    Draws soft, rounded petals resembling a lotus flower.
+
+    Mathematical Explanation:
+    - The curve of each petal is approximated by a polygon with many vertices.
+    - The path follows a sinusoidal curve from a base point on the inner radius
+      out to a maximum width at the midpoint radius, and back to the tip at the outer radius.
+    - Two symmetrical curves are generated to form one complete petal.
+    """
+    n_petals = random.randint(8, 16)
+    line_width = _get_line_width(is_filled)
+    center = environment["center"]
+    white = environment["white"]
+    petal_width_factor = (math.pi / n_petals) * 0.8  # Max angular width of a petal
+
+    for i in range(n_petals):
+        base_angle = 2 * math.pi * i / n_petals
+        
+        # Build one half of the petal
+        points_half = []
+        for t in np.linspace(0, 1, 15): # 15 segments for a smooth curve
+            r = lerp(inner_r, outer_r, t)
+            # Use sin(t*pi) to make the petal bulge in the middle
+            angle_offset = petal_width_factor * math.sin(t * math.pi)
+            points_half.append((
+                center[0] + r * math.cos(base_angle + angle_offset),
+                center[1] + r * math.sin(base_angle + angle_offset)
+            ))
+        
+        # Mirror the half to create the full petal
+        points_full = points_half + points_half[-2::-1]
+        
+        if is_filled:
+            draw.polygon(points_full, fill=white + (180,))
+        else:
+            draw.line(points_full, fill=white + (180,), width=line_width, joint="curve")
+
+def draw_lotus_petals_filled(draw, environment, inner_r, outer_r): draw_lotus_petals_base(draw, environment, inner_r, outer_r, True)
+def draw_lotus_petals_outlined(draw, environment, inner_r, outer_r): draw_lotus_petals_base(draw, environment, inner_r, outer_r, False)
+
+
+# --- 4. Braid ---
+def draw_braid(draw, environment, inner_r, outer_r):
+    """
+    Draws two phase-shifted waves that cross over each other to form a braid.
+
+    Mathematical Explanation:
+    - Two separate sinusoidal waves are drawn.
+    - Their radii oscillate between `inner_r` and `outer_r` based on their angle `theta`.
+    - One wave is given a phase offset of `pi` relative to the other,
+      causing them to intersect at the midpoint radius.
+    """
+    segments = 150
+    freq = random.randint(16, 24)
+    line_width = _get_line_width(False)
+    center = environment["center"]
+    white = environment["white"]
+    mid_r = (inner_r + outer_r) / 2
+    amplitude = (outer_r - inner_r) / 2
+
+    for phase in [0, math.pi]: # Two waves, 180 degrees out of phase
+        points = []
+        for i in range(segments + 1):
+            theta = 2 * math.pi * i / segments
+            r = mid_r + amplitude * math.sin(theta * freq + phase)
+            points.append((
+                center[0] + r * math.cos(theta),
+                center[1] + r * math.sin(theta)
+            ))
+        draw.line(points, fill=white + (180,), width=line_width, joint="curve")
+
+# --- 10. Sprouts ---
+def draw_sprouts(draw, environment, inner_r, outer_r):
+    """
+    Draws a series of 'sprouts', each with a main stem and two branching leaves.
+
+    Mathematical Explanation:
+    - A main stem is drawn as a radial line from `inner_r` to `outer_r`.
+    - From the midpoint of the stem, two smaller lines (leaves) branch off
+      at a fixed angle (e.g., +/- 45 degrees) relative to the stem.
+    """
+    n_sprouts = random.randint(10, 20)
+    line_width = _get_line_width(False)
+    center = environment["center"]
+    white = environment["white"]
+    branch_angle = math.pi / 4 # 45 degrees
+
+    for i in range(n_sprouts):
+        angle = 2 * math.pi * i / n_sprouts
+        
+        # Main stem
+        p_start = (center[0] + inner_r * math.cos(angle), center[1] + inner_r * math.sin(angle))
+        p_end = (center[0] + outer_r * math.cos(angle), center[1] + outer_r * math.sin(angle))
+        draw.line([p_start, p_end], fill=white+(180,), width=line_width)
+        
+        # Branches
+        mid_r = (inner_r + outer_r) / 2
+        branch_length = (outer_r - inner_r) * 0.3
+        p_mid = (center[0] + mid_r * math.cos(angle), center[1] + mid_r * math.sin(angle))
+        
+        # Branch 1
+        p_branch1 = (p_mid[0] + branch_length * math.cos(angle + branch_angle),
+                     p_mid[1] + branch_length * math.sin(angle + branch_angle))
+        draw.line([p_mid, p_branch1], fill=white+(180,), width=line_width)
+        
+        # Branch 2
+        p_branch2 = (p_mid[0] + branch_length * math.cos(angle - branch_angle),
+                     p_mid[1] + branch_length * math.sin(angle - branch_angle))
+        draw.line([p_mid, p_branch2], fill=white+(180,), width=line_width)
