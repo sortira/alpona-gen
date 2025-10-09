@@ -9,6 +9,8 @@
 ## Overview
 AlponaGen is a fractal-based generative art engine designed to create intricate alpona/mandala-style images. The project uses mathematical patterns and modular design principles to produce stunning visuals. The main motive was to create a dataset of images of Alpona-s to potentially train models on them.
 
+**⚠️ IF YOU'RE LOOKING for the ALPONA-GEN DATASET, visit [this Kaggle dataset](https://www.kaggle.com/datasets/ar1tr0/alpona-gen). This repository was used to generate that dataset.**
+
 ## Features ✨
 - **Modular Design:** Separate files for generation engine and pattern drawing functions.
 - **Customizable Output:** Specify width, height, and output directory via command-line arguments.
