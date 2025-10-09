@@ -165,14 +165,14 @@ class ArtGenerator:
                 available_styles = [s for s in available_styles if s != last_layer_style]
 
                 if last_layer_was_filled:
-                    if random.random() < 0.7:
+                    if random.random() < 0.55:
                         style = random.choice(available_styles)
                         last_layer_was_filled = True
                     else:
                         style = random.choice(available_styles)
                         last_layer_was_filled = False
                 else:
-                    if random.random() < 0.85:
+                    if random.random() < 0.7:
                         style = random.choice(available_styles)
                         last_layer_was_filled = True
                     else:
