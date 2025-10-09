@@ -43,7 +43,7 @@ if __name__ == "__main__":
     logger.info(f"Output Directory: {args.output}")
 
     gen = ArtGenerator(width=args.width, height=args.height, output_dir=args.output)
-    for index in range(10):
+    for index in range(args.count):
         logger.info("Generating alpona...")
         gen.generate("alpona", id=index)
     logger.info(f"\n[+] Generation complete. Check the '{args.output}' directory.")
