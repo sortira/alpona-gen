@@ -1,5 +1,7 @@
 # AlponaGen 🎨
 
+[![DOI](https://zenodo.org/badge/1072704183.svg)](https://doi.org/10.5281/zenodo.17921032)
+
 ![Generated Alpona Image](readme-cover.png)
 
 **Version:** 1.0
