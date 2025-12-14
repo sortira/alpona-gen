@@ -1,5 +1,7 @@
 # AlponaGen 🎨
 
+> ⚠️ if you use any part of this repository or associated dataset (by reproducing any part of this project included but not limited to idea/results/methodologies/pipeline, you must use the following DOI citation.
+> 
 [![DOI](https://zenodo.org/badge/1072704183.svg)](https://doi.org/10.5281/zenodo.17921032)
 
 ![Generated Alpona Image](readme-cover.png)
